@@ -1,0 +1,43 @@
+name: SmartUI SDK Cloud (TestNG)
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smartui-cloud:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: mvn -q -DskipTests=true clean compile
+
+      - name: Install SmartUI CLI
+        run: npm install -g @lambdatest/smartui-cli
+
+      - name: Run SmartUI SDK Cloud suite
+        env:
+          PROJECT_TOKEN: ${{ secrets.SMARTUI_PROJECT_TOKEN }}
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+        run: |
+          npx smartui exec -- mvn test -D suite=sdk-cloud.xml
+
+      - name: Print SmartUI log
+        if: ${{ always() }}
+        run: cat .smartui.log
