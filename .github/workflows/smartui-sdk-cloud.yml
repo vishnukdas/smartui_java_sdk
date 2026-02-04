@@ -38,7 +38,7 @@ jobs:
 
       - name: Run SmartUI SDK Cloud suite
         run: |
-          npx smartui exec -- mvn test -D suite=sdk-cloud.xml
+          npx smartui exec -- mvn --ntp test -D suite=sdk-cloud.xml
 
       - name: Print SmartUI log
         if: ${{ always() }}
