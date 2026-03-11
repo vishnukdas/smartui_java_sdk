@@ -3,9 +3,9 @@ name: SmartUI SDK Cloud (TestNG)
 on:
   push:
     branches: ["**"]
-  pull_request:
-  schedule:
-    - cron: "*/5 * * * *"
+  # pull_request:
+  # schedule:
+  #   - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
